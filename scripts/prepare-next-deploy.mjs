@@ -2,7 +2,7 @@
  * After `next build`, assemble a deployable `dist/` folder for EC2 rsync + Node.
  * Run: node scripts/prepare-next-deploy.mjs
  */
-import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'fs';
+import { cpSync, existsSync, mkdirSync, rmSync, unlinkSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
 const root = process.cwd();
@@ -25,6 +25,12 @@ const heroAvif = join(out, 'public/images/blog/hero-sunset.avif');
 if (!existsSync(heroAvif)) {
     console.error('Missing dist hero AVIF — run `npm run optimize:hero` before build.');
     process.exit(1);
+}
+
+const heroJpg = join(out, 'public/images/blog/hero-sunset.jpg');
+if (existsSync(heroJpg)) {
+    unlinkSync(heroJpg);
+    console.log('Stripped hero-sunset.jpg from dist/public (AVIF/WebP only).');
 }
 
 writeFileSync(

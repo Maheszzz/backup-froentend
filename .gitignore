@@ -34,3 +34,7 @@ build
 *.key
 coworker_key
 coworker_key.pub
+
+# Hero source JPG (optimized AVIF/WebP are committed; source stays local)
+public/images/blog/hero-sunset.jpg
+scripts/assets/hero-sunset-source.jpg

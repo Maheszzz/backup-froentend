@@ -1,6 +1,7 @@
 import { ImageResponse } from 'next/og';
 
-export const runtime = 'edge';
+/** Node runtime — avoids edge static-generation warning; OG images work on Node in Next 15. */
+export const runtime = 'nodejs';
 
 const BRAND_RED = '#D92027';
 const BRAND_DARK = '#0f172a';

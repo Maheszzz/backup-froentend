@@ -1,0 +1,52 @@
+name: Build and Deploy Frontend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'package.json'
+      - 'next.config.ts'
+      - 'scripts/deploy-all.sh'
+      - 'scripts/prepare-next-deploy.mjs'
+      - 'deploy/**'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build production app
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/makemystay.pem
+          chmod 600 ~/.ssh/makemystay.pem
+
+      - name: Deploy to EC2 Cluster
+        shell: bash
+        env:
+          DEPLOY_PEM: /home/runner/.ssh/makemystay.pem
+          DEPLOY_HOSTS: ${{ secrets.PRODUCTION_HOSTS }}
+        run: |
+          ./scripts/deploy-all.sh

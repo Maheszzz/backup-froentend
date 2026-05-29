@@ -1,0 +1,21 @@
+# Netlify / Cloudflare Pages: legacy rent locality URLs → canonical `/rent/{slug}`
+/properties cat=pg /pg/bangalore 301
+/rent-in-whitefield /rent/whitefield 301
+/rent-in-marathahalli /rent/marathahalli 301
+/rent-in-btm-layout /rent/btm 301
+/rent-in-electronic-city /rent/electronic-city 301
+/rent-in-indiranagar /rent/indiranagar 301
+/rent-in-koramangala /rent/koramangala 301
+/rent-in-hsr-layout /rent/hsr-layout 301
+/rent-in-bellandur /rent/bellandur 301
+/rent-in-sarjapur-road /rent/sarjapur-road 301
+/rent-in-hebbal /rent/hebbal 301
+/rent-in-jp-nagar /rent/jp-nagar 301
+/rent-in-bannerghatta-road /rent/bannerghatta-road 301
+
+# Removed PG property URLs: handled in-app (PropertyUnavailablePage + locality links).
+# Add explicit 301s here when you have a GSC export, e.g.:
+# /pg/202-old-listing-marathahalli /pg/marathahalli 301
+
+# SPA catch-all for React Router
+/* /index.html 200

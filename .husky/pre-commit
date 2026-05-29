@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+cd "$(dirname "$0")/.." || exit 1
+
+if [ ! -f node_modules/.bin/lint-staged ]; then
+  echo "husky pre-commit: lint-staged not found. Run: npm install"
+  exit 1
+fi
+
+exec node_modules/.bin/lint-staged

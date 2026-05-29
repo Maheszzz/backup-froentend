@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Conversion / payment / account utility — not primary landing content
+Disallow: /quick-pay
+Disallow: /wishlist
+Disallow: /schedule-demo
+
+Sitemap: https://makemystay.ai/sitemap.xml
+
+# Sitemap files are discovery hints only (not indexable pages)
+# X-Robots-Tag: noindex is set on /sitemap*.xml via Next.js headers

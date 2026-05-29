@@ -1,0 +1,3 @@
+# Netlify: Prerender.io was previously wired via [[edge_functions]] → netlify/edge-functions/prerender.ts,
+# but that file is not in this repo (breaks deploys). Use nginx on EC2 per deploy/prerender-hosts.md instead,
+# or add a real edge function and restore [[edge_functions]] here.

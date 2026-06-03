@@ -22,13 +22,27 @@ function resolveSourcePath() {
         console.log('Copied hero source to scripts/assets/hero-sunset-source.jpg');
         return sourceInAssets;
     }
-    console.error('Missing hero source. Add scripts/assets/hero-sunset-source.jpg');
-    console.error('(or place hero-sunset.jpg in public/images/blog/ once to migrate)');
-    process.exit(1);
+    return null;
 }
 
 async function main() {
     const input = resolveSourcePath();
+    if (!input) {
+        const requiredFiles = [
+            'hero-sunset.avif',
+            'hero-sunset.webp',
+            'hero-sunset-mobile.avif',
+            'hero-sunset-mobile.webp',
+        ];
+        const allExist = requiredFiles.every((name) => existsSync(join(outDir, name)));
+        if (allExist) {
+            console.log('Missing hero source, but optimized assets already exist. Skipping optimization.');
+            return;
+        }
+        console.error('Missing hero source. Add scripts/assets/hero-sunset-source.jpg');
+        console.error('(or place hero-sunset.jpg in public/images/blog/ once to migrate)');
+        process.exit(1);
+    }
     const sharp = (await import('sharp')).default;
 
     const tasks = [

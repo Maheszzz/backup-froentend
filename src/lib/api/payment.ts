@@ -20,6 +20,7 @@ export interface RazorpayOrder {
     attempts: number;
     notes: any[];
     created_at: number;
+    razorpay_key?: string;
 }
 
 export interface VerifyPaymentRequest {

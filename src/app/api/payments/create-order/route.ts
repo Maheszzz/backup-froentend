@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { razorpayCreateOrder } from '@/lib/razorpayServer';
+import { razorpayCreateOrder, getRazorpayCredentials } from '@/lib/razorpayServer';
 
 export async function POST(req: Request) {
     try {
@@ -21,7 +21,12 @@ export async function POST(req: Request) {
             },
         });
 
-        return NextResponse.json(order);
+        const creds = getRazorpayCredentials();
+
+        return NextResponse.json({
+            ...order,
+            razorpay_key: creds?.keyId,
+        });
     } catch (e) {
         const message = e instanceof Error ? e.message : 'Failed to create order';
         console.error('[payments/create-order]', e);

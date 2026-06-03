@@ -62,14 +62,6 @@ export default function QuickPay() {
         try {
             setIsProcessing(true);
 
-            // Check env
-            const key = getRazorpayKeyId();
-            if (!key) {
-                alert("Error: Razorpay key is missing. Set RAZORPAY_KEY_ID and NEXT_PUBLIC_RAZORPAY_KEY_ID in .env, then restart the dev server.");
-                setIsProcessing(false);
-                return;
-            }
-
             // 1. Load Razorpay SDK
             const isLoaded = await loadRazorpay();
             if (!isLoaded) {
@@ -88,7 +80,15 @@ export default function QuickPay() {
                 payer_phone: phone
             });
 
-            // 3. Open Razorpay Checkout
+            // 3. Resolve Razorpay Key (prefer server response, fallback to build env)
+            const key = order.razorpay_key || getRazorpayKeyId();
+            if (!key) {
+                alert("Error: Razorpay key is missing. Please set RAZORPAY_KEY_ID or NEXT_PUBLIC_RAZORPAY_KEY_ID in your deployment environment variables.");
+                setIsProcessing(false);
+                return;
+            }
+
+            // 4. Open Razorpay Checkout
             const options = {
                 key: key,
                 amount: order.amount,
